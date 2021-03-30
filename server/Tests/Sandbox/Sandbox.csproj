@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.312" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\YouShare.Common\YouShare.Common.csproj" />
+    <ProjectReference Include="..\..\Data\YouShare.Data.Common\YouShare.Data.Common.csproj" />
+    <ProjectReference Include="..\..\Data\YouShare.Data.Models\YouShare.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\YouShare.Data\YouShare.Data.csproj" />
+    <ProjectReference Include="..\..\Services\YouShare.Services.Data\YouShare.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\YouShare.Services.Mapping\YouShare.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\YouShare.Services.Messaging\YouShare.Services.Messaging.csproj" />
+    <ProjectReference Include="..\..\Services\YouShare.Services\YouShare.Services.csproj" />
+  </ItemGroup>
+
+</Project>
