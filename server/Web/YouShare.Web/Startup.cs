@@ -8,7 +8,6 @@
     using YouShare.Data.Models;
     using YouShare.Data.Repositories;
     using YouShare.Data.Seeding;
-    using YouShare.Services.Data;
     using YouShare.Services.Mapping;
     using YouShare.Services.Messaging;
     using YouShare.Web.ViewModels;
@@ -64,7 +63,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,10 +2,8 @@
 {
     using YouShare.Data.Common.Models;
 
-    public class Setting : BaseDeletableModel<int>
+    public class Country : BaseModel<int>
     {
         public string Name { get; set; }
-
-        public string Value { get; set; }
     }
 }

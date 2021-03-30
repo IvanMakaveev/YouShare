@@ -24,7 +24,21 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<CommentLike> CommentLikes { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
+
+        public DbSet<PostLike> PostLikes { get; set; }
+
+        public DbSet<Profile> Profiles { get; set; }
+
+        public DbSet<ProfileFollower> ProfileFollowers { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
