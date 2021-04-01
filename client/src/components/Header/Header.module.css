@@ -1,0 +1,35 @@
+.navBtn {
+    border-radius: 5px;
+    padding: 0 5px;
+    transition: all 0.5s ease-out;
+}
+
+.navBtnLink {
+    color: #343a40;
+    transition: all 0.5s ease-out;
+}
+
+.navBtn:hover {
+    background-color: #333;
+    transition: all 0.5s ease-out;
+}
+
+.navBtn:hover .navBtnLink{
+    color: #ddd;
+    transition: all 0.5s ease-out;
+}
+
+.brand{
+    font-size: 27px;
+}
+
+.brandPrimary {
+    color: rgb(0, 110, 255);
+    font-weight: bold;
+    padding-right: 2px;
+}
+
+.brandSecondary{
+    color:rgb(70, 70, 70);
+    font-weight:normal;
+}

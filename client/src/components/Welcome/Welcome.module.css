@@ -1,0 +1,27 @@
+.brandPrimary {
+    color: rgb(0, 89, 255);
+    font-weight: bold;
+    padding-right: 2px;
+}
+
+.brandSecondary{
+    color:rgb(199, 199, 199);
+    font-weight:normal;
+}
+
+.blur{
+    filter: blur(2px);
+    filter: brightness(45%);
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.caption{
+    bottom:40%;
+}
+
+@media (max-width: 576px) {
+    .caption{
+        bottom: 20px;
+    }
+}
