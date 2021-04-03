@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Privacy from './components/Privacy';
 import Footer from './components/Footer';
 import Welcome from './components/Welcome';
+import Register from './components/Register/Register';
 
 import './App.css';
 
@@ -13,14 +14,13 @@ function App() {
         <div className="App">
             <Header />
 
-            <div class="container">
-                <main className="main">
-                    <Switch>
-                        <Route path="/" component={Welcome} />
-                        <Route path="/privacy" component={Privacy} />
-                    </Switch>
-                </main>
-            </div>
+            <main className="main">
+                <Switch>
+                    <Route path="/" exact component={Welcome} />
+                    <Route path="/privacy" component={Privacy} />
+                    <Route path="/register" component={Register} />
+                </Switch>
+            </main>
 
             <Footer />
         </div>
