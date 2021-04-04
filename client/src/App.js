@@ -6,6 +6,7 @@ import Privacy from './components/Privacy';
 import Footer from './components/Footer';
 import Welcome from './components/Welcome';
 import Register from './components/Register/Register';
+import Login from './components/Login/Login';
 
 import './App.css';
 
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/" exact component={Welcome} />
                     <Route path="/privacy" component={Privacy} />
                     <Route path="/register" component={Register} />
+                    <Route path="/login" component={Login} />
                 </Switch>
             </main>
 

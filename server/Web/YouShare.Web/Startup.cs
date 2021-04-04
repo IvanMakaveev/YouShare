@@ -25,6 +25,7 @@
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using System.Threading.Tasks;
+    using YouShare.Services.Data;
 
     public class Startup
     {
@@ -97,6 +98,8 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<ICountriesService, CountriesService>();
+            services.AddTransient<IProfilesService, ProfilesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
