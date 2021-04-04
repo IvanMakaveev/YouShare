@@ -5,8 +5,9 @@ import Home from './components/Home';
 import Privacy from './components/Privacy';
 import Footer from './components/Footer';
 import Welcome from './components/Welcome';
-import Register from './components/Register/Register';
-import Login from './components/Login/Login';
+import Register from './components/Register/';
+import Login from './components/Login/';
+import Logout from './components/Logout';
 
 import './App.css';
 
@@ -18,9 +19,11 @@ function App() {
             <main className="main">
                 <Switch>
                     <Route path="/" exact component={Welcome} />
+                    <Route path="/home" exact component={Home} />
                     <Route path="/privacy" component={Privacy} />
                     <Route path="/register" component={Register} />
                     <Route path="/login" component={Login} />
+                    <Route path="/logout" component={Logout} />
                 </Switch>
             </main>
 

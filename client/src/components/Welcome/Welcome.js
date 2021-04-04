@@ -1,10 +1,16 @@
 import { Jumbotron, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import CarouselCard from './CarouselCard'
 import style from './Welcome.module.css';
 
 const Welcome = () => {
+    const isLoggedIn = localStorage.getItem('token') != null;
+
+    if (isLoggedIn) {
+        return (<Redirect to="/home"/>)
+    }
+
     return (
         <>
             <CarouselCard />

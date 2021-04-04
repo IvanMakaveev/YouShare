@@ -28,13 +28,17 @@ const Login = ({
 
             userService.loginUser(userData)
                 .then(res => {
-                    if(typeof(res) != "string"){
+                    if(res == undefined){
+                        let error = 'Server timed out';
+                        setError(error);
+                    }
+                    else if(typeof(res) != "string"){
                         let error = Object.values(res).join('\n');
                         setError(error);
                     }
                     else{
                         localStorage.setItem("token", res)
-                        history.push("/");
+                        history.push("/home");
                     }
                 });
         }

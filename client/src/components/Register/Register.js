@@ -66,13 +66,17 @@ class Register extends Component {
 
             userService.registerUser(newUser)
                 .then(res => {
-                    if(typeof(res) != "string"){
+                    if(res == undefined){
+                        let error = 'Server timed out';
+                        this.setState({error});
+                    }
+                    else if(typeof(res) != "string"){
                         let error = Object.values(res).join('\n');
                         this.setState({error});
                     }
                     else{
                         localStorage.setItem("token", res)
-                        this.props.history.push("/");
+                        this.props.history.push("/home");
                     }
                 });
         }
