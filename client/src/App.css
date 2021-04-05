@@ -1,3 +1,11 @@
 .App {
   text-align: center;
 }
+
+.form {
+  text-align: left;
+}
+  
+.error{
+      color:red;
+}

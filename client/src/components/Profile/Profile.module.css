@@ -1,0 +1,25 @@
+.profileMenu{
+    background-color: rgb(243, 243, 243);   
+}
+
+.link{
+    color:#212529;
+    background-color: white;
+}
+
+.link:hover{
+    text-decoration: none;
+    color: #212529;
+}
+
+.imgContainer{
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}

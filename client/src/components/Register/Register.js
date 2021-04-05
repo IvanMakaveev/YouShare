@@ -2,7 +2,6 @@ import { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 import * as userService from '../../services/userService'; 
-import style from './Register.module.css';
 
 class Register extends Component {
     constructor(props) {
@@ -87,7 +86,7 @@ class Register extends Component {
             <div className="container mt-3">
                 <h1>Register</h1>
                 <div className="row">
-                    <Form className={`offset-md-2 col-md-8 ${style.form}`} onSubmit={this.onFormSubmitHandler}>
+                    <Form className="offset-md-2 col-md-8 form" onSubmit={this.onFormSubmitHandler}>
                         <hr />
                         <Form.Group controlId="username">
                             <Form.Label>Username</Form.Label>
@@ -138,7 +137,7 @@ class Register extends Component {
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group controlId="country">
+                        <Form.Group controlId="gender">
                             <Form.Label className="mr-2">Gender</Form.Label>
                             <Form.Check
                                 inline
@@ -168,7 +167,7 @@ class Register extends Component {
                         </Form.Group>
 
                         {this.state.error
-                            ? <p className={style.error}>{this.state.error}</p>
+                            ? <p className="error">{this.state.error}</p>
                             : null
                         }
 

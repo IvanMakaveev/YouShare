@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using YouShare.Web.ViewModels;
+    using YouShare.Web.ViewModels.Profiles;
 
     public interface IProfilesService
     {
@@ -14,5 +15,13 @@
         T GetByUserId<T>(string id);
 
         Task<int> CreateAsync(RegisterInputModel input);
+
+        Task UpdateAsync(string id, EditProfileInputModel input, string path);
+
+        Task FollowProfileAsync(int profileId, int senderId);
+
+        Task DeleteAsync(int id);
+
+        bool IsFollowing(int profileId, int accessorId);
     }
 }

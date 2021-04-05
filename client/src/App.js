@@ -8,6 +8,8 @@ import Welcome from './components/Welcome';
 import Register from './components/Register/';
 import Login from './components/Login/';
 import Logout from './components/Logout';
+import Profile from './components/Profile';
+import Error from './components/Error';
 
 import './App.css';
 
@@ -24,6 +26,8 @@ function App() {
                     <Route path="/register" component={Register} />
                     <Route path="/login" component={Login} />
                     <Route path="/logout" component={Logout} />
+                    <Route path="/profile/:profileId" component={Profile} />
+                    <Route path="/error" component={Error} />
                 </Switch>
             </main>
 

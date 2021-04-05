@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 import * as userService from '../../services/userService';
-import style from './Login.module.css';
 
 const Login = ({
     history
@@ -48,7 +47,7 @@ const Login = ({
         <div className="container mt-3">
             <h1>Login</h1>
             <div className="row">
-                <Form className={`offset-md-2 col-md-8 ${style.form}`} onSubmit={onFormSubmitHandler}>
+                <Form className="offset-md-2 col-md-8 form" onSubmit={onFormSubmitHandler}>
                     <hr />
                     <Form.Group controlId="username">
                         <Form.Label>Username</Form.Label>
@@ -61,7 +60,7 @@ const Login = ({
                     </Form.Group>
 
                     {error
-                        ? <p className={style.error}>{error}</p>
+                        ? <p className="error">{error}</p>
                         : null
                     }
 

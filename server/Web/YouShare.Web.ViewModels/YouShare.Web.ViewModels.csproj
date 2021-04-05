@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\YouShare.Data.Models\YouShare.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\YouShare.Services.Mapping\YouShare.Services.Mapping.csproj" />
+    <ProjectReference Include="..\YouShare.Web.Infrastructure\YouShare.Web.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

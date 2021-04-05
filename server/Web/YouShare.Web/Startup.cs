@@ -100,6 +100,7 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<IProfilesService, ProfilesService>();
+            services.AddTransient<IImagesService, ImagesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
