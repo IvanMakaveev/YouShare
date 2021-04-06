@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { Redirect } from 'react-router';
+import { useContext, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
+import UserContext from '../Contexts/UserContext';
 import * as userService from '../../services/userService';
 
 const Login = ({
     history
 }) => {
     const [error, setError] = useState('');
+    const [userToken, setUserToken] = useContext(UserContext);
 
     const onFormSubmitHandler = (e) => {
         e.preventDefault();
@@ -27,20 +30,25 @@ const Login = ({
 
             userService.loginUser(userData)
                 .then(res => {
-                    if(res == undefined){
+                    if (res == undefined) {
                         let error = 'Server timed out';
                         setError(error);
                     }
-                    else if(typeof(res) != "string"){
+                    else if (typeof (res) != "string") {
                         let error = Object.values(res).join('\n');
                         setError(error);
                     }
-                    else{
+                    else {
+                        setUserToken(res);
                         localStorage.setItem("token", res)
                         history.push("/home");
                     }
                 });
         }
+    }
+
+    if (userToken) {
+        return <Redirect to="/home" />
     }
 
     return (

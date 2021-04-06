@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 
 import * as profileService from '../../../services/profileService';
 import * as userService from '../../../services/userService';
+import UserContext from '../../Contexts/UserContext';
 
 class Edit extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ class Edit extends Component {
         userService.getRegisteredCountries()
             .then(countries => this.setState({ countries }))
 
-        profileService.getProfileData(this.props.match.params.profileId)
+        profileService.getProfileData(this.props.match.params.profileId, this.context[0])
             .then(res => {
                 if (res == undefined) {
                     this.props.history.push('/error')
@@ -36,14 +37,17 @@ class Edit extends Component {
                     this.props.history.push(`/profile/${this.props.match.params.profileId}`)
                 }
                 else {
-                    var date = new Date(res.birthDay);
+                    const date = new Date(res.birthDay);
+                    const user = {
+                        firstName: res.firstName,
+                        lastName: res.lastName,
+                        birthDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+                        about: res.about,
+                        country: res.countryName,
+                        gender: res.gender,
+                    }
 
-                    this.setState({ firstName: res.firstName });
-                    this.setState({ lastName: res.lastName });
-                    this.setState({ birthDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` });
-                    this.setState({ about: res.about });
-                    this.setState({ country: res.countryName });
-                    this.setState({ gender: res.gender });
+                    this.setState({ ...user });
                 }
             });
     }
@@ -81,7 +85,7 @@ class Edit extends Component {
             formData.append('gender', gender.value);
             formData.append('image', image.files[0])
 
-            profileService.editProfile(this.props.match.params.profileId, formData)
+            profileService.editProfile(this.props.match.params.profileId, formData, this.context[0])
                 .then(res => {
                     if (res == "success") {
                         this.props.didUpdate();
@@ -204,5 +208,7 @@ class Edit extends Component {
         );
     }
 }
+
+Edit.contextType = UserContext;
 
 export default Edit;

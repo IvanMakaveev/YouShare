@@ -28,6 +28,21 @@ namespace YouShare.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetCurrentProfile()
+        {
+            var userid = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profileId = this.profilesService.GetId(userid);
+            var viewModel = this.profilesService.GetById<CurrentProfileReturnModel>(profileId);
+
+            if (viewModel == null)
+            {
+                return this.NotFound();
+            }
+
+            return new JsonResult(viewModel);
+        }
+
+        [HttpGet]
         [Route("{id:int}")]
         public IActionResult GetProfile(int id)
         {

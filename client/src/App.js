@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -10,26 +11,35 @@ import Login from './components/Login/';
 import Logout from './components/Logout';
 import Profile from './components/Profile';
 import Error from './components/Error';
+import UserContext from './components/Contexts/UserContext';
 
 import './App.css';
 
 function App() {
+    const [userToken, setUserToken] = useState(localStorage.getItem('token'));
+
+    useEffect(() => {
+        setUserToken(localStorage.getItem('token'))
+    }, [])
+
     return (
         <div className="App">
-            <Header />
+            <UserContext.Provider value={[userToken, setUserToken]}>
+                <Header />
 
-            <main className="main">
-                <Switch>
-                    <Route path="/" exact component={Welcome} />
-                    <Route path="/home" exact component={Home} />
-                    <Route path="/privacy" component={Privacy} />
-                    <Route path="/register" component={Register} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/logout" component={Logout} />
-                    <Route path="/profile/:profileId" component={Profile} />
-                    <Route path="/error" component={Error} />
-                </Switch>
-            </main>
+                <main className="main">
+                    <Switch>
+                        <Route path="/" exact component={Welcome} />
+                        <Route path="/home" exact component={Home} />
+                        <Route path="/privacy" component={Privacy} />
+                        <Route path="/register" component={Register} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/logout" component={Logout} />
+                        <Route path="/profile/:profileId" component={Profile} />
+                        <Route path="/error" component={Error} />
+                    </Switch>
+                </main>
+            </UserContext.Provider>
 
             <Footer />
         </div>

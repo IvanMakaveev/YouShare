@@ -1,12 +1,20 @@
+import { useContext, useEffect } from "react";
 import { Redirect } from "react-router";
+
+import UserContext from "../Contexts/UserContext";
 
 const Logout = ({
     history
 }) => {
-    localStorage.removeItem('token');
+    const [userToken, setUserToken] = useContext(UserContext);
+
+    useEffect(() => {
+        setUserToken(null);
+        localStorage.removeItem('token');
+    }, [])
 
     return (
-        <Redirect to="/"/>
+        <Redirect to="/" />
     );
 }
 

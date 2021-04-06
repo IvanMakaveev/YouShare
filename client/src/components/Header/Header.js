@@ -1,17 +1,36 @@
+import { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 
-import style from './Header.module.css';
+import * as profileService from '../../services/profileService';
 import SearchBar from './../SearchBar'
+import UserContext from '../Contexts/UserContext';
+
+import style from './Header.module.css';
 
 const Header = () => {
-    const isLoggedIn = localStorage.getItem('token') != null;
+    const [userToken] = useContext(UserContext);
+    const [userData, setUserData] = useState();
 
+    useEffect(() => {
+        if(userToken){
+            profileService.getCurrentProfileData(userToken)
+            .then(res => {
+                if (res){
+                    setUserData({...res});
+                }
+            });
+        }
+        else {
+            setUserData();
+        }
+    }, [userToken])
+    
     const renderNavButtons = () => {
-        if (isLoggedIn) {
+        if (userData) {
             return (
                 <ul className="navbar-nav">
                     <li className={`nav-item mr-1 ${style.navBtn}`}>
-                        <Link className={`nav-link ${style.navBtnLink}`} to="/profile">Profile</Link>
+                        <Link className={`text-nowrap nav-link ${style.navBtnLink}`} to={`/profile/${userData.id}`}>Hello {userData.firstName}</Link>
                     </li>
                     <li className={`nav-item mr-1 ${style.navBtn}`}>
                         <Link className={`nav-link ${style.navBtnLink}`} to="/logout">Logout</Link>

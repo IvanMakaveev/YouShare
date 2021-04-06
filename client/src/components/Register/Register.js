@@ -1,7 +1,8 @@
 import { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-import * as userService from '../../services/userService'; 
+import * as userService from '../../services/userService';
+import UserContext from '../Contexts/UserContext';
 
 class Register extends Component {
     constructor(props) {
@@ -16,8 +17,10 @@ class Register extends Component {
     }
 
     componentDidMount() {
-        userService.getRegisteredCountries()
-            .then(countries => this.setState({countries}))
+        if (!this.context[0]) {
+            userService.getRegisteredCountries()
+                .then(countries => this.setState({ countries }))
+        }
     }
 
     onFormSubmitHandler(e) {
@@ -26,54 +29,55 @@ class Register extends Component {
         const { username, email, firstName, lastName, birthDate, password, confirmPassword, country, gender } = e.target;
         let error = "";
 
-        if(username.value.length < 5 || username.value.length > 50){
+        if (username.value.length < 5 || username.value.length > 50) {
             error = "The Username must be between 5 and 50 symbols";
-            this.setState({error});
+            this.setState({ error });
         }
-        else if(firstName.value.length < 2 || firstName.value.length > 50){
+        else if (firstName.value.length < 2 || firstName.value.length > 50) {
             error = "The First Name must be between 2 and 50 symbols";
-            this.setState({error});
+            this.setState({ error });
         }
-        else if(lastName.value.length < 2 || lastName.value.length > 50){
+        else if (lastName.value.length < 2 || lastName.value.length > 50) {
             error = "The Last Name must be between 2 and 50 symbols";
-            this.setState({error});
+            this.setState({ error });
         }
-        else if(birthDate.value == '' || new Date(birthDate.value) < new Date(1899, 12, 31) || new Date(birthDate.value) > Date.now()){
+        else if (birthDate.value == '' || new Date(birthDate.value) < new Date(1899, 12, 31) || new Date(birthDate.value) > Date.now()) {
             error = "The Birth Date must be after the 1900s and before now";
-            this.setState({error});
+            this.setState({ error });
         }
-        else if(password.value.length < 6 || password.value.length > 100){
+        else if (password.value.length < 6 || password.value.length > 100) {
             error = "The Password must be between 6 and 100 symbols";
-            this.setState({error});
+            this.setState({ error });
         }
-        else if(password.value != confirmPassword.value){
+        else if (password.value != confirmPassword.value) {
             error = "The two Passwords must match";
-            this.setState({error});
+            this.setState({ error });
         }
-        else{
+        else {
             const newUser = {
-                username: username.value, 
-                email: email.value, 
-                firstName: firstName.value, 
-                lastName: lastName.value, 
-                birthDate: birthDate.value, 
-                password: password.value, 
-                confirmPassword: confirmPassword.value, 
-                country: country.value, 
+                username: username.value,
+                email: email.value,
+                firstName: firstName.value,
+                lastName: lastName.value,
+                birthDate: birthDate.value,
+                password: password.value,
+                confirmPassword: confirmPassword.value,
+                country: country.value,
                 gender: gender.value
             }
 
             userService.registerUser(newUser)
                 .then(res => {
-                    if(res == undefined){
+                    if (res == undefined) {
                         let error = 'Server timed out';
-                        this.setState({error});
+                        this.setState({ error });
                     }
-                    else if(typeof(res) != "string"){
+                    else if (typeof (res) != "string") {
                         let error = Object.values(res).join('\n');
-                        this.setState({error});
+                        this.setState({ error });
                     }
-                    else{
+                    else {
+                        this.context[1](res);
                         localStorage.setItem("token", res)
                         this.props.history.push("/home");
                     }
@@ -82,6 +86,10 @@ class Register extends Component {
     }
 
     render() {
+        if (this.context[0]) {
+            this.props.history.push("/home");
+        }
+
         return (
             <div className="container mt-3">
                 <h1>Register</h1>
@@ -90,7 +98,7 @@ class Register extends Component {
                         <hr />
                         <Form.Group controlId="username">
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" name="username"/>
+                            <Form.Control type="text" name="username" />
                             <Form.Text className="text-muted">
                                 You will use this username to log into your account.
                             </Form.Text>
@@ -98,39 +106,39 @@ class Register extends Component {
 
                         <Form.Group controlId="email">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" name="email"/>
+                            <Form.Control type="email" name="email" />
                         </Form.Group>
 
                         <Form.Group controlId="firstName">
                             <Form.Label>First Name</Form.Label>
-                            <Form.Control type="text" name="firstName"/>
+                            <Form.Control type="text" name="firstName" />
                         </Form.Group>
 
                         <Form.Group controlId="lastName">
                             <Form.Label>Last Name</Form.Label>
-                            <Form.Control type="text" name="lastName"/>
+                            <Form.Control type="text" name="lastName" />
                         </Form.Group>
 
                         <Form.Group controlId="birthDate">
                             <Form.Label>Birth Date</Form.Label>
-                            <Form.Control type="date" name="birthDate"/>
+                            <Form.Control type="date" name="birthDate" />
                         </Form.Group>
 
                         <Form.Group controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" name="password"/>
+                            <Form.Control type="password" name="password" />
                         </Form.Group>
 
                         <Form.Group controlId="confirmPassword">
                             <Form.Label>Confirm Password</Form.Label>
-                            <Form.Control type="password" name="confirmPassword"/>
+                            <Form.Control type="password" name="confirmPassword" />
                         </Form.Group>
 
                         <Form.Group controlId="country">
                             <Form.Label>Country</Form.Label>
                             <Form.Control as="select" name="country">
                                 {
-                                    this.state.countries.map(x => 
+                                    this.state.countries.map(x =>
                                         <option key={x.key} value={x.key}>{x.value}</option>
                                     )
                                 }
@@ -180,5 +188,7 @@ class Register extends Component {
         )
     }
 }
+
+Register.contextType = UserContext;
 
 export default Register;

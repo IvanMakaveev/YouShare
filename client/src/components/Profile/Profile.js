@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Image, ListGroup, Button } from 'react-bootstrap';
 import { NavLink, Switch, Route } from 'react-router-dom';
 
 import * as profileService from '../../services/profileService';
+import UserContext from '../Contexts/UserContext';
 import Edit from './Edit';
 import style from './Profile.module.css'
 
@@ -10,52 +11,47 @@ const Profile = ({
     match,
     history
 }) => {
-    const [name, setName] = useState("");
-    const [followers, setFollowers] = useState(0);
-    const [birthday, setBirthday] = useState("");
-    const [country, setCountry] = useState("");
-    const [gender, setGender] = useState("");
-    const [about, setAbout] = useState("");
-    const [image, setImage] = useState("");
-    const [isOwner, setIsOwner] = useState(false);
-    const [isFollowing, setFollowing] = useState(false);
+    const [userData, setUserData] = useState({});
+    const [userToken] = useContext(UserContext);
 
     const updateInfo = () => {
-        profileService.getProfileData(match.params.profileId)
-        .then(res => {
-            if (res == undefined) {
-                history.push('/error')
-            }
-            else {
-                var date = new Date(res.birthDay);
-
-                setAbout(res.about);
-                setBirthday(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`);
-                setCountry(res.countryName);
-                setName(`${res.firstName} ${res.lastName}`);
-                setFollowers(res.followersCount);
-                setGender(res.gender);
-                setImage(res.imagePath);
-                setIsOwner(res.isOwner);
-                setFollowing(res.isFollowing);
-            }
-        })
+        profileService.getProfileData(match.params.profileId, userToken)
+            .then(res => {
+                if (res == undefined) {
+                    history.push('/error')
+                }
+                else {
+                    const date = new Date(res.birthDay);
+                    const user = {
+                        about: res.about,
+                        birthday: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
+                        country: res.countryName,
+                        name: `${res.firstName} ${res.lastName}`,
+                        followers: res.followersCount,
+                        gender: res.gender,
+                        image: res.imagePath,
+                        isOwner: res.isOwner,
+                        isFollowing: res.isFollowing,
+                    }
+                    setUserData(user);
+                }
+            })
     }
 
     useEffect(() => {
         updateInfo();
-    }, [match.params.profileId])
+    }, [match.params.profileId, userToken])
 
     const onFollowProfileHandler = () => {
-        profileService.followProfile(match.params.profileId)
+        profileService.followProfile(match.params.profileId, userToken)
             .then(res => {
                 if (res == "success") {
-                    setFollowing(prev => !prev)
+                    setUserData(prev => ({ ...prev, isFollowing: !prev.isFollowing }))
                 }
                 else if (res == "unauthorized") {
                     history.push("/login")
                 }
-                else{
+                else {
                     history.push("/error");
                 }
             });
@@ -70,15 +66,15 @@ const Profile = ({
             <div className="offset-md-1 col-md-10 row mt-3">
                 <section className={`text-break col-md-4 py-3 ${style.profileMenu}`}>
                     <div className={style.imgContainer}>
-                        <Image src={image} alt="Profile Image" roundedCircle className={style.img} />
+                        <Image src={userData.image} alt="Profile Image" roundedCircle className={style.img} />
                     </div>
 
-                    <h1 className="my-3">{name}</h1>
-                    <p><b>Followers: </b>{followers}</p>
-                    <p><b>Country: </b>{country}</p>
-                    <p><b>Birthday: </b>{birthday}</p>
-                    <p><b>Gender: </b>{gender}</p>
-                    <p><b>About: </b>{about ? about : "There is no About info!"}</p>
+                    <h1 className="my-3">{userData.name}</h1>
+                    <p><b>Followers: </b>{userData.followers}</p>
+                    <p><b>Country: </b>{userData.country}</p>
+                    <p><b>Birthday: </b>{userData.birthday}</p>
+                    <p><b>Gender: </b>{userData.gender}</p>
+                    <p><b>About: </b>{userData.about ? userData.about : "There is no About info!"}</p>
 
                     <ListGroup className="overflow-hidden mt-4">
                         <NavLink exact to={`/profile/${match.params.profileId}`} className={style.link} activeClassName="bg-primary text-white">
@@ -87,7 +83,7 @@ const Profile = ({
                             </ListGroup.Item>
                         </NavLink>
                         {
-                            isOwner &&
+                            userData.isOwner &&
                             <>
                                 <NavLink to={`/profile/${match.params.profileId}/post`} className={style.link} activeClassName="bg-primary text-white">
                                     <ListGroup.Item className="bg-transparent">
@@ -108,14 +104,14 @@ const Profile = ({
                         }
                     </ListGroup>
                     {
-                        !isOwner &&
+                        !userData.isOwner &&
                         <Button
-                            variant={isFollowing ? 'primary' : 'outline-primary'}
+                            variant={userData.isFollowing ? 'primary' : 'outline-primary'}
                             onClick={onFollowProfileHandler}
                             className="mt-1"
                             block
                         >
-                            {isFollowing ? 'Unfollow' : 'Follow'}
+                            {userData.isFollowing ? 'Unfollow' : 'Follow'}
                         </Button>
                     }
                 </section>
@@ -123,7 +119,7 @@ const Profile = ({
                     <Switch>
                         <Route exact path="/profile/:profileId" render={() => { return (<h1>asd1</h1>) }} />
                         <Route path="/profile/:profileId/post" render={() => { return (<h1>asd2</h1>) }} />
-                        <Route path="/profile/:profileId/edit" render={(props) => { return <Edit {...props} didUpdate={onInfoUpdateHandler}/>}} />
+                        <Route path="/profile/:profileId/edit" render={(props) => { return <Edit {...props} didUpdate={onInfoUpdateHandler} /> }} />
                         <Route path="/profile/:profileId/delete" render={() => { return (<h1>asd4</h1>) }} />
                     </Switch>
                 </section>
