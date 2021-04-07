@@ -57,7 +57,7 @@ export const followProfile = (id, token) => {
 
 export const editProfile = (id, formData, token) => {
     return fetch(url + id, {
-        method: "POST",
+        method: "PUT",
         headers: {
             'Authorization': 'Bearer ' + token,
         },
@@ -72,6 +72,34 @@ export const editProfile = (id, formData, token) => {
             }
             else {
                 return res.json();
+            }
+        })
+        .catch(res => console.log(res));
+}
+
+export const isOwner = (id, token) => {
+    return fetch(url + 'isOwner/' + id, {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+        .then(res => res.json())
+        .catch(res => console.log(res));
+}
+
+export const deleteProfile = (id, token) => {
+    return fetch(url + id, {
+        method: "DELETE",
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+        .then(res => {
+            if(res.ok == true){
+                return 'success';
+            }
+            else {
+                return 'error';
             }
         })
         .catch(res => console.log(res));

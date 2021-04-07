@@ -74,7 +74,7 @@ const Login = ({
 
                     <Button variant="primary" type="submit">
                         Submit
-                        </Button>
+                    </Button>
                 </Form>
             </div>
         </div>

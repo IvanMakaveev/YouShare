@@ -25,9 +25,6 @@ class Edit extends Component {
     }
 
     componentDidMount() {
-        userService.getRegisteredCountries()
-            .then(countries => this.setState({ countries }))
-
         profileService.getProfileData(this.props.match.params.profileId, this.context[0])
             .then(res => {
                 if (res == undefined) {
@@ -50,6 +47,9 @@ class Edit extends Component {
                     this.setState({ ...user });
                 }
             });
+
+        userService.getRegisteredCountries()
+            .then(countries => this.setState({ countries }))
     }
 
     onFormSubmitHandler(e) {
@@ -95,11 +95,11 @@ class Edit extends Component {
                         this.props.history.push(`/login`);
                     }
                     else if (res != undefined) {
-                        let error = Object.values(res).join('\n');
+                        const error = Object.values(res).join('\n');
                         this.setState({ error });
                     }
                     else {
-                        let error = 'Server timed out';
+                        const error = 'Server timed out';
                         this.setState({ error });
                     }
                 });

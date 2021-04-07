@@ -12,7 +12,6 @@
     using YouShare.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
     using YouShare.Web.ViewModels;
-    using YouShare.Web.ViewModels.Profiles;
 
     public class ProfilesService : IProfilesService
     {
@@ -20,17 +19,20 @@
         private readonly IRepository<Country> countriesRepository;
         private readonly IRepository<ProfileFollower> followersRepository;
         private readonly IImagesService imagesService;
+        private readonly IPostsService postsService;
 
         public ProfilesService(
             IDeletableEntityRepository<Profile> profileRepository,
             IRepository<Country> countriesRepository,
             IRepository<ProfileFollower> followersRepository,
-            IImagesService imagesService)
+            IImagesService imagesService,
+            IPostsService postsService)
         {
             this.profileRepository = profileRepository;
             this.countriesRepository = countriesRepository;
             this.followersRepository = followersRepository;
             this.imagesService = imagesService;
+            this.postsService = postsService;
         }
 
         public int GetId(string userId)
@@ -134,7 +136,7 @@
             var profile = this.profileRepository.All().Where(x => x.Id == id).FirstOrDefault();
             if (profile != null)
             {
-                //await this.postsService.DeleteAllPostsFromProfileAsync(id);
+                await this.postsService.DeleteAllPostsFromProfileAsync(id);
                 //await this.commentsService.DeleteAllCommentsFromProfileAsync(id);
 
                 this.profileRepository.Delete(profile);

@@ -19,7 +19,11 @@ class Register extends Component {
     componentDidMount() {
         if (!this.context[0]) {
             userService.getRegisteredCountries()
-                .then(countries => this.setState({ countries }))
+                .then(countries => {
+                    if (countries) {
+                        this.setState({ countries })
+                    }
+                })
         }
     }
 

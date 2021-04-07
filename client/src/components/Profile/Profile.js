@@ -4,6 +4,9 @@ import { NavLink, Switch, Route } from 'react-router-dom';
 
 import * as profileService from '../../services/profileService';
 import UserContext from '../Contexts/UserContext';
+import CreatePost from './CreatePost';
+import ProfilePosts from './ProfilePosts';
+import Delete from './Delete';
 import Edit from './Edit';
 import style from './Profile.module.css'
 
@@ -46,7 +49,15 @@ const Profile = ({
         profileService.followProfile(match.params.profileId, userToken)
             .then(res => {
                 if (res == "success") {
-                    setUserData(prev => ({ ...prev, isFollowing: !prev.isFollowing }))
+
+                    setUserData(prev => {
+                        if (prev.isFollowing) {
+                            return { ...prev, followers: prev.followers - 1, isFollowing: !prev.isFollowing }
+                        }
+                        else {
+                            return { ...prev, followers: prev.followers + 1, isFollowing: !prev.isFollowing }
+                        }
+                    })
                 }
                 else if (res == "unauthorized") {
                     history.push("/login")
@@ -117,10 +128,10 @@ const Profile = ({
                 </section>
                 <section className="col-md-8">
                     <Switch>
-                        <Route exact path="/profile/:profileId" render={() => { return (<h1>asd1</h1>) }} />
-                        <Route path="/profile/:profileId/post" render={() => { return (<h1>asd2</h1>) }} />
+                        <Route exact path="/profile/:profileId" component={ProfilePosts} />
+                        <Route path="/profile/:profileId/post" component={CreatePost} />
                         <Route path="/profile/:profileId/edit" render={(props) => { return <Edit {...props} didUpdate={onInfoUpdateHandler} /> }} />
-                        <Route path="/profile/:profileId/delete" render={() => { return (<h1>asd4</h1>) }} />
+                        <Route path="/profile/:profileId/delete" component={Delete} />
                     </Switch>
                 </section>
             </div>

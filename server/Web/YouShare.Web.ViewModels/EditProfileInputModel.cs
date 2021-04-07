@@ -1,4 +1,4 @@
-﻿namespace YouShare.Web.ViewModels.Profiles
+﻿namespace YouShare.Web.ViewModels
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

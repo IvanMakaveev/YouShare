@@ -8,7 +8,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using YouShare.Services.Data;
 using YouShare.Web.ViewModels;
-using YouShare.Web.ViewModels.Profiles;
 
 namespace YouShare.Web.Controllers
 {
@@ -40,6 +39,34 @@ namespace YouShare.Web.Controllers
             }
 
             return new JsonResult(viewModel);
+        }
+
+        [HttpGet]
+        [Route("[action]/{id:int}")]
+        public IActionResult IsOwner(int id)
+        {
+            var userid = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profileId = this.profilesService.GetId(userid);
+
+            return new JsonResult(id == profileId);
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> DeleteProfile(int id)
+        {
+            var userid = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profileId = this.profilesService.GetId(userid);
+
+            if (id == profileId)
+            {
+                await this.profilesService.DeleteAsync(id);
+                return this.Ok();
+            }
+            else
+            {
+                return this.BadRequest();
+            }
         }
 
         [HttpGet]
@@ -78,7 +105,7 @@ namespace YouShare.Web.Controllers
             return this.Ok();
         }
 
-        [HttpPost]
+        [HttpPut]
         [Authorize]
         [Route("{id:int}")]
         public async Task<IActionResult> Edit(int id, [FromForm] EditProfileInputModel input)

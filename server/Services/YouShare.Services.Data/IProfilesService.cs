@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
 
     using YouShare.Web.ViewModels;
-    using YouShare.Web.ViewModels.Profiles;
 
     public interface IProfilesService
     {
