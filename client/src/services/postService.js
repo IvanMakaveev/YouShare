@@ -21,3 +21,34 @@ export const createPost = (formData, token) => {
         })
         .catch(res => console.log(res));
 }
+
+export const getPosts = (id, page, token) => {
+    return fetch(url + `${id}?pageNumber=${page}`, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        },
+    })
+        .then(res => res.json())
+        .catch(res => console.log(res));
+}
+
+export const likePost = (postId, token) => {
+    return fetch(url + 'likePost/' + postId, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        },
+    })
+        .then(res => {
+            if (res.ok == true) {
+                return "success";
+            }
+            else if (res.status == 401) {
+                return "unauthorized";
+            }
+            else {
+                return undefined;
+            }
+        })
+        .catch(res => console.log(res));
+}

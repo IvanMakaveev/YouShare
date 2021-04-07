@@ -99,17 +99,17 @@ const Profile = ({
                                 <NavLink to={`/profile/${match.params.profileId}/post`} className={style.link} activeClassName="bg-primary text-white">
                                     <ListGroup.Item className="bg-transparent">
                                         Create Post
-                                        </ListGroup.Item>
+                                    </ListGroup.Item>
                                 </NavLink>
                                 <NavLink to={`/profile/${match.params.profileId}/edit`} className={style.link} activeClassName="bg-primary text-white">
                                     <ListGroup.Item className="bg-transparent">
                                         Edit Profile
-                                        </ListGroup.Item>
+                                    </ListGroup.Item>
                                 </NavLink>
                                 <NavLink to={`/profile/${match.params.profileId}/delete`} className={style.link} activeClassName="bg-danger text-white">
                                     <ListGroup.Item className="bg-transparent">
                                         Delete Profile
-                                        </ListGroup.Item>
+                                    </ListGroup.Item>
                                 </NavLink>
                             </>
                         }

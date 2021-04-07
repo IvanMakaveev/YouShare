@@ -18,6 +18,7 @@
         private readonly IDeletableEntityRepository<Profile> profileRepository;
         private readonly IRepository<Country> countriesRepository;
         private readonly IRepository<ProfileFollower> followersRepository;
+        private readonly ICommentsService commentsService;
         private readonly IImagesService imagesService;
         private readonly IPostsService postsService;
 
@@ -25,12 +26,14 @@
             IDeletableEntityRepository<Profile> profileRepository,
             IRepository<Country> countriesRepository,
             IRepository<ProfileFollower> followersRepository,
+            ICommentsService commentsService,
             IImagesService imagesService,
             IPostsService postsService)
         {
             this.profileRepository = profileRepository;
             this.countriesRepository = countriesRepository;
             this.followersRepository = followersRepository;
+            this.commentsService = commentsService;
             this.imagesService = imagesService;
             this.postsService = postsService;
         }
@@ -137,7 +140,7 @@
             if (profile != null)
             {
                 await this.postsService.DeleteAllPostsFromProfileAsync(id);
-                //await this.commentsService.DeleteAllCommentsFromProfileAsync(id);
+                await this.commentsService.DeleteAllCommentsFromProfileAsync(id);
 
                 this.profileRepository.Delete(profile);
                 await this.profileRepository.SaveChangesAsync();
