@@ -78,7 +78,7 @@ const Post = ({
                 </Card.Header>
             }
             <Card.Body>
-                <Card.Title className="row pl-3 flex-nowrap mb-0">
+                <Card.Title className="row mx-0 flex-nowrap mb-0">
                     <div className={style.imgContainer}>
                         <Image src={post.profileImage} alt="Profile Image" roundedCircle className={style.img} />
                     </div>

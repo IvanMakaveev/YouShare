@@ -6,8 +6,7 @@ const Paging = ({
     page,
     pageNumber,
     pagesCount,
-    hasPreviousPage,
-    hasNextPage
+    elements
 }) => {
     const [pagingButtons, setPagingButtons] = useState([]);
 
@@ -32,6 +31,10 @@ const Paging = ({
         setPage(Number(e.target.getAttribute("value")))
     }
 
+
+    if (elements == 0) {
+        return null;
+    }
     return (
         <Pagination className="d-flex justify-content-center mt-5">
             { pagingButtons}

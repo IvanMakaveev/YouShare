@@ -24,21 +24,23 @@ const ProfilePosts = ({
     }, [page])
 
     const onPostDeleteHandler = (postId) => {
-        setPosts(prev => ({...prev, posts: prev.posts.filter(x => x.id != postId)}))
+        setPosts(prev => ({ ...prev, items: prev.items - 1, posts: prev.posts.filter(x => x.id != postId) }))
     }
 
     return (
         <div className="offset-md-2 col-md-8">
-            {postsData.posts?.map(x => 
-                <Post key={x.id} postObject={x} onDeleteHandler={onPostDeleteHandler}/>
-            )}
+            {postsData.posts && postsData.posts.length != 0
+                ? postsData.posts.map(x =>
+                    <Post key={x.id} postObject={x} onDeleteHandler={onPostDeleteHandler} />
+                )
+                : <h3>No Posts to show!</h3>
+            }
             <Paging
                 setPage={setPage}
                 page={page}
+                elements={postsData.items}
                 pageNumber={postsData.pageNumber}
                 pagesCount={postsData.pagesCount}
-                hasPreviousPage={postsData.hasPreviousPage}
-                hasNextPage={postsData.hasNextPage}
             />
         </div>
     );

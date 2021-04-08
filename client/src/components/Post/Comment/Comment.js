@@ -32,7 +32,7 @@ const Comment = ({
     return (
         <Card>
             <Card.Body>
-                <Card.Title className="row pl-3 flex-nowrap mb-0">
+                <Card.Title className="row mx-0 flex-nowrap mb-0">
                     <div className="align-self-center">
                         <Link className='link' to={`/profile/${comment.profileId}`}>{comment.profileFirstName} {comment.profileLastName}</Link>
                         <p><small className="text-muted">{comment.createdOnString}</small></p>

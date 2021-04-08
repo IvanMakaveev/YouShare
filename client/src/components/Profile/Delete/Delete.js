@@ -38,7 +38,7 @@ const Delete = ({
     return (
         <section className="offset-md-2 col-md-8">
             <h1>Are you sure you want to delete your profile?</h1>
-            <div className="row justify-content-around">
+            <div className="row mx-0 justify-content-around">
                 <Button variant="danger" size="lg" onClick={onDeleteProfileHandler}>Delete</Button>
                 <Link to={`/profile/${profileId}`}>
                     <Button variant="primary" size="lg">Cancel</Button>

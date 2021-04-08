@@ -14,16 +14,13 @@ namespace YouShare.Web.Controllers
     [Route("[controller]")]
     public class CommentsController : ControllerBase
     {
-        private readonly IPostsService postsService;
         private readonly IProfilesService profilesService;
         private readonly ICommentsService commentsService;
 
         public CommentsController(
-            IPostsService postsService,
             IProfilesService profilesService,
             ICommentsService commentsService)
         {
-            this.postsService = postsService;
             this.profilesService = profilesService;
             this.commentsService = commentsService;
         }

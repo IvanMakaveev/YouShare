@@ -73,7 +73,7 @@ const Profile = ({
     }
 
     return (
-        <div className="row">
+        <div className="row mx-0">
             <div className="offset-md-1 col-md-10 row mt-3">
                 <section className={`text-break col-md-4 py-3 align-self-start ${style.profileMenu}`}>
                     <div className={style.imgContainer}>

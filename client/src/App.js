@@ -10,6 +10,7 @@ import Register from './components/Register/';
 import Login from './components/Login/';
 import Logout from './components/Logout';
 import Profile from './components/Profile';
+import Search from './components/Search';
 import Error from './components/Error';
 import UserContext from './components/Contexts/UserContext';
 
@@ -30,7 +31,8 @@ function App() {
                 <main className="main">
                     <Switch>
                         <Route path="/" exact component={Welcome} />
-                        <Route path="/home" exact component={Home} />
+                        <Route path="/home" component={Home} />
+                        <Route path="/search/:text" component={Search}/>
                         <Route path="/privacy" component={Privacy} />
                         <Route path="/register" component={Register} />
                         <Route path="/login" component={Login} />
