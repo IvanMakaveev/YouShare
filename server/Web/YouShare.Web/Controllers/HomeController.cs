@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System;
     using System.Linq;
     using System.Security.Claims;
     using YouShare.Services.Data;
@@ -59,7 +60,7 @@
 
             var viewModel = new BrowseViewModel()
             {
-                Following = following,
+                Profiles = following,
                 Posts = newestPosts,
                 PageNumber = pageNumber,
                 ItemsPerPage = 20,
@@ -67,6 +68,68 @@
             };
 
             return new JsonResult(viewModel);
+        }
+
+        [HttpGet]
+        [Route("{pageNumber:int}/{searchText}")]
+        public IActionResult Search(int pageNumber, string searchText)
+        {
+            if (searchText != null && searchText.Length > 0)
+            {
+                pageNumber = pageNumber < 1 ? 1 : pageNumber;
+
+                var searchTokens = searchText.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+                var viewModel = new BrowseViewModel();
+
+                if (this.User.Identity.IsAuthenticated)
+                {
+                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var profileId = this.profilesService.GetId(userId);
+
+                    viewModel.Posts = this.browseService.SearchPosts<PostViewModel>(searchTokens, pageNumber);
+                    viewModel.Items = this.browseService.GetSearchCount(searchTokens);
+
+                    foreach (var post in viewModel.Posts)
+                    {
+                        post.IsOwner = this.postsService.IsOwner(post.Id, profileId);
+                        post.IsLiked = this.postsService.IsLiked(post.Id, profileId);
+
+                        foreach (var comment in post.Comments)
+                        {
+                            comment.IsLiked = this.commentsService.IsLiked(comment.Id, profileId);
+                        }
+
+                        post.Comments.OrderByDescending(x => x.CreatedOn);
+                    }
+                }
+                else
+                {
+                    viewModel.Posts = this.browseService.SearchPublicPosts<PostViewModel>(searchTokens, pageNumber);
+                    viewModel.Items = this.browseService.GetSearchPublicCount(searchTokens);
+
+                    foreach (var post in viewModel.Posts)
+                    {
+                        post.IsOwner = false;
+                        post.IsLiked = false;
+
+                        foreach (var comment in post.Comments)
+                        {
+                            comment.IsLiked = false;
+                        }
+
+                        post.Comments.OrderByDescending(x => x.CreatedOn);
+                    }
+                }
+
+                viewModel.Profiles = this.browseService.SearchProfiles<ProfileSearchViewModel>(searchTokens, pageNumber);
+                viewModel.PageNumber = pageNumber;
+                viewModel.ItemsPerPage = 20;
+
+                return new JsonResult(viewModel);
+            }
+
+            return this.BadRequest();
         }
     }
 }

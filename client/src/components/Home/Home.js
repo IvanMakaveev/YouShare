@@ -28,7 +28,7 @@ const Home = ({
                     history.push('/error');
                 }
             })
-    }, [])
+    }, [page])
 
 
     if (userToken == null) {
@@ -39,8 +39,8 @@ const Home = ({
             <div className="offset-md-1 col-md-10 row mt-3">
                 <section className="col-md-3 align-self-start">
                     <h2>Followed Profiles:</h2>
-                    {browseData.following && browseData.following.length != 0
-                        ? browseData.following.map(x =>
+                    {browseData.profiles && browseData.profiles.length != 0
+                        ? browseData.profiles.map(x =>
                             <ProfileMedia key={x.id} profile={x} />
                         )
                         : <h3>It looks like you haven't followed anyone.</h3>

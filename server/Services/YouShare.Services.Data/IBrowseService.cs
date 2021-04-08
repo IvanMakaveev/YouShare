@@ -9,14 +9,18 @@ namespace YouShare.Services.Data
     {
         IEnumerable<T> GetNewestPosts<T>(int profileId, int pageNumber, int count = 20);
 
-        IEnumerable<ProfileFollowingViewModel> GetFollowing(int profileId);
+        IEnumerable<ProfileSearchViewModel> GetFollowing(int profileId);
 
         int GetPostsCount(int profileId);
 
         IEnumerable<T> SearchPosts<T>(string[] searchTokens, int pageNumber, int count = 20);
 
+        IEnumerable<T> SearchPublicPosts<T>(string[] searchTokens, int pageNumber, int count = 20);
+
         IEnumerable<T> SearchProfiles<T>(string[] searchTokens, int pageNumber, int count = 20);
 
         int GetSearchCount(string[] searchTokens);
+
+        int GetSearchPublicCount(string[] searchTokens);
     }
 }

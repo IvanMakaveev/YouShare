@@ -7,7 +7,7 @@ const ProfileMedia = ({
     profile
 }) => {
     return (
-        <Media className="text-left border rounded p-2">
+        <Media className="text-left border rounded p-2 mb-2">
             <div className={style.imgContainer}>
                 <img
                     className={`d-block mr-3 ${style.img} rounded-circle`}

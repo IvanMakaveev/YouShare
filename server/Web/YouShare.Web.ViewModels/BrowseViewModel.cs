@@ -6,7 +6,7 @@ namespace YouShare.Web.ViewModels
 {
     public class BrowseViewModel
     {
-        public IEnumerable<ProfileFollowingViewModel> Following { get; set; }
+        public IEnumerable<ProfileSearchViewModel> Profiles { get; set; }
 
         public IEnumerable<PostViewModel> Posts { get; set; }
 

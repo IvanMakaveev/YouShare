@@ -25,11 +25,11 @@ namespace YouShare.Services.Data
             this.profileFollowersRepository = profileFollowersRepository;
         }
 
-        public IEnumerable<ProfileFollowingViewModel> GetFollowing(int profileId)
+        public IEnumerable<ProfileSearchViewModel> GetFollowing(int profileId)
         {
             var profiles = this.profileFollowersRepository.AllAsNoTracking()
                 .Where(x => x.FollowerId == profileId)
-                .Select(x => new ProfileFollowingViewModel()
+                .Select(x => new ProfileSearchViewModel()
                 {
                     Id = x.ProfileId,
                     Name = $"{x.Profile.FirstName} {x.Profile.LastName}",
@@ -73,7 +73,7 @@ namespace YouShare.Services.Data
             foreach (var search in searchTokens)
             {
                 postsCountResults += this.postsRepository.AllAsNoTracking()
-                    .Where(x => x.Text.ToLower().Contains(search)).Count();
+                    .Where(x => x.Text.ToLower().Contains(search) || x.Title.ToLower().Contains(search)).Count();
 
                 profilesCountResults += this.profilesRepository.AllAsNoTracking()
                     .Where(x => x.FirstName.ToLower().Contains(search) || x.LastName.ToLower().Contains(search)).Count();
@@ -89,7 +89,7 @@ namespace YouShare.Services.Data
             foreach (var search in searchTokens)
             {
                 results.AddRange(this.postsRepository.AllAsNoTracking()
-                .Where(x => x.Text.ToLower().Contains(search))
+                .Where(x => x.Text.ToLower().Contains(search) || x.Title.ToLower().Contains(search))
                 .OrderByDescending(x => x.CreatedOn)
                 .Skip((pageNumber - 1) * count)
                 .Take(count)
@@ -108,6 +108,41 @@ namespace YouShare.Services.Data
             {
                 results.AddRange(this.profilesRepository.AllAsNoTracking()
                 .Where(x => x.FirstName.ToLower().Contains(search) || x.LastName.ToLower().Contains(search))
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip((pageNumber - 1) * count)
+                .Take(count)
+                .To<T>()
+                .ToList());
+            }
+
+            return results;
+        }
+
+        public int GetSearchPublicCount(string[] searchTokens)
+        {
+            var postsCountResults = 0;
+            var profilesCountResults = 0;
+
+            foreach (var search in searchTokens)
+            {
+                postsCountResults += this.postsRepository.AllAsNoTracking()
+                    .Where(x => (x.Text.ToLower().Contains(search) || x.Title.ToLower().Contains(search)) && x.IsPublic == true).Count();
+
+                profilesCountResults += this.profilesRepository.AllAsNoTracking()
+                    .Where(x => x.FirstName.ToLower().Contains(search) || x.LastName.ToLower().Contains(search)).Count();
+            }
+
+            return Math.Max(postsCountResults, profilesCountResults);
+        }
+
+        public IEnumerable<T> SearchPublicPosts<T>(string[] searchTokens, int pageNumber, int count = 20)
+        {
+            var results = new List<T>();
+
+            foreach (var search in searchTokens)
+            {
+                results.AddRange(this.postsRepository.AllAsNoTracking()
+                .Where(x => (x.Text.ToLower().Contains(search) || x.Title.ToLower().Contains(search)) && x.IsPublic == true)
                 .OrderByDescending(x => x.CreatedOn)
                 .Skip((pageNumber - 1) * count)
                 .Take(count)
