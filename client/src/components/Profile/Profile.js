@@ -75,7 +75,7 @@ const Profile = ({
     return (
         <div className="row">
             <div className="offset-md-1 col-md-10 row mt-3">
-                <section className={`text-break col-md-4 py-3 ${style.profileMenu}`}>
+                <section className={`text-break col-md-4 py-3 align-self-start ${style.profileMenu}`}>
                     <div className={style.imgContainer}>
                         <Image src={userData.image} alt="Profile Image" roundedCircle className={style.img} />
                     </div>
@@ -88,7 +88,7 @@ const Profile = ({
                     <p><b>About: </b>{userData.about ? userData.about : "There is no About info!"}</p>
 
                     <ListGroup className="overflow-hidden mt-4">
-                        <NavLink exact to={`/profile/${match.params.profileId}`} className={style.link} activeClassName="bg-primary text-white">
+                        <NavLink exact to={`/profile/${match.params.profileId}`} className={`link ${style.link}`} activeClassName="bg-primary text-white">
                             <ListGroup.Item className="bg-transparent">
                                 Posts
                             </ListGroup.Item>
@@ -96,17 +96,17 @@ const Profile = ({
                         {
                             userData.isOwner &&
                             <>
-                                <NavLink to={`/profile/${match.params.profileId}/post`} className={style.link} activeClassName="bg-primary text-white">
+                                <NavLink to={`/profile/${match.params.profileId}/post`} className={`link ${style.link}`} activeClassName="bg-primary text-white">
                                     <ListGroup.Item className="bg-transparent">
                                         Create Post
                                     </ListGroup.Item>
                                 </NavLink>
-                                <NavLink to={`/profile/${match.params.profileId}/edit`} className={style.link} activeClassName="bg-primary text-white">
+                                <NavLink to={`/profile/${match.params.profileId}/edit`} className={`link ${style.link}`} activeClassName="bg-primary text-white">
                                     <ListGroup.Item className="bg-transparent">
                                         Edit Profile
                                     </ListGroup.Item>
                                 </NavLink>
-                                <NavLink to={`/profile/${match.params.profileId}/delete`} className={style.link} activeClassName="bg-danger text-white">
+                                <NavLink to={`/profile/${match.params.profileId}/delete`} className={`link ${style.link}`} activeClassName="bg-danger text-white">
                                     <ListGroup.Item className="bg-transparent">
                                         Delete Profile
                                     </ListGroup.Item>

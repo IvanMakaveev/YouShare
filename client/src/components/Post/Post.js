@@ -1,44 +1,80 @@
 import { useContext, useState } from 'react';
-import { Card, Button, Image } from 'react-bootstrap';
+import { Card, Button, Image, Collapse } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 
 import * as postService from '../../services/postService';
+import * as commentService from '../../services/commentService';
+import Comment from './Comment';
 import UserContext from '../Contexts/UserContext';
 
 import style from './Post.module.css';
 
 const Post = ({
-    postObject
+    postObject,
+    onDeleteHandler
 }) => {
     const [post, setPost] = useState(postObject);
+    const [showComments, setShowComments] = useState(false);
     const [userToken] = useContext(UserContext);
     const history = useHistory();
 
     const onLikePostHandler = () => {
         postService.likePost(post.id, userToken)
             .then(res => {
-                if(res == 'success'){
+                if (res == 'success') {
                     if (post.isLiked) {
-                        setPost(prev => ({ ...post, likes: post.likes - 1, isLiked: !post.isLiked }))
+                        setPost(prev => ({ ...prev, likes: prev.likes - 1, isLiked: !prev.isLiked }))
                     }
                     else {
-                        setPost(prev => ({ ...post, likes: post.likes + 1, isLiked: !post.isLiked }))
+                        setPost(prev => ({ ...prev, likes: prev.likes + 1, isLiked: !prev.isLiked }))
                     }
                 }
                 else if (res == "unauthorized") {
                     history.push("/login")
                 }
-                else {
-                    history.push("/error");
+            })
+    }
+
+    const onCreateCommentSubmitHandler = (e) => {
+        e.preventDefault();
+        const { comment } = e.target;
+        if (comment.value.length > 0 || comment.value.length <= 100) {
+            commentService.createComment(post.id, comment.value, userToken)
+                .then(res => {
+                    console.log(res)
+                    if (typeof (res) == 'object') {
+                        const comments = post.comments;
+                        comments.push(res)
+                        setPost(prev => ({ ...prev, comments: comments }))
+                    }
+                    else if (res == "unauthorized") {
+                        history.push("/login")
+                    }
+                })
+        }
+    }
+
+    const onDeleteClickHandler = () =>{
+        postService.deletePost(post.id, userToken)
+            .then(res => {
+                if(res == 'success'){
+                    onDeleteHandler(post.id);
+                }
+                else if (res == 'unathorized'){
+                    history.push("/login")
                 }
             })
     }
 
+    const onShowCommentsHandler = () => {
+        setShowComments(prev => !prev);
+    }
+
     return (
-        <Card className="text-left">
+        <Card className="text-left mb-2">
             {post.isOwner &&
                 <Card.Header>
-                    <Button variant="danger">Delete</Button>
+                    <Button variant="danger" onClick={onDeleteClickHandler}>Delete</Button>
                 </Card.Header>
             }
             <Card.Body>
@@ -47,7 +83,7 @@ const Post = ({
                         <Image src={post.profileImage} alt="Profile Image" roundedCircle className={style.img} />
                     </div>
                     <div className="align-self-center">
-                        <Link className={style.link} to={`/profile/${post.profileId}`}>{post.profileName}</Link> - {post.title}
+                        <Link className='link' to={`/profile/${post.profileId}`}>{post.profileName}</Link> - {post.title}
                         <p><small className="text-muted">{post.createdOnString}</small></p>
                     </div>
                 </Card.Title>
@@ -67,11 +103,20 @@ const Post = ({
                     <span className="ml-2">{post.likes}</span>
                 </div>
                 <div className="row mx-0 mt-1 justify-content-right flex-grow-1">
-                    <Button variant="primary" className="mr-2">Show</Button>
-                    <Button variant="primary">Comment</Button>
-                    <input type="text" name="comment" placeholder="Comment... (100 symbols max)" className="form-control w-auto flex-grow-1" />
+                    <Button variant="primary" className="mr-2" onClick={onShowCommentsHandler}>Show</Button>
+                    <form className="row mx-0 flex-grow-1" onSubmit={onCreateCommentSubmitHandler}>
+                        <Button variant="primary" type="submit">Comment</Button>
+                        <input type="text" name="comment" placeholder="Comment... (100 symbols max)" className="form-control w-auto flex-grow-1" />
+                    </form>
                 </div>
             </Card.Footer>
+            <Collapse in={showComments}>
+                <div>
+                    {post.comments.map(x =>
+                        <Comment key={x.id} commentObject={x} />
+                    )}
+                </div>
+            </Collapse>
         </Card>
     );
 }

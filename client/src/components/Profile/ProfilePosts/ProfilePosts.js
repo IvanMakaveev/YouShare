@@ -18,20 +18,24 @@ const ProfilePosts = ({
         postService.getPosts(profileId, page, userToken)
             .then(res => {
                 if (res) {
-                    console.log(res)
                     setPosts(res)
                 }
             })
     }, [page])
 
+    const onPostDeleteHandler = (postId) => {
+        setPosts(prev => ({...prev, posts: prev.posts.filter(x => x.id != postId)}))
+    }
+
     return (
         <div className="offset-md-2 col-md-8">
             {postsData.posts?.map(x => 
-                <Post key={x.id} postObject={x}/>
+                <Post key={x.id} postObject={x} onDeleteHandler={onPostDeleteHandler}/>
             )}
             <Paging
                 setPage={setPage}
                 page={page}
+                pageNumber={postsData.pageNumber}
                 pagesCount={postsData.pagesCount}
                 hasPreviousPage={postsData.hasPreviousPage}
                 hasNextPage={postsData.hasNextPage}

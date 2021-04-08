@@ -22,7 +22,7 @@
             this.commentLikesRepository = commentLikesRepository;
         }
 
-        public async Task<T> AddCommentAsync<T>(int profileId, PostCommentInputModel input)
+        public async Task<PostCommentViewModel> AddCommentAsync<T>(int profileId, PostCommentInputModel input)
         {
             var comment = new Comment()
             {
@@ -34,7 +34,7 @@
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
 
-            return this.commentsRepository.AllAsNoTracking().Where(x => x.Id == comment.Id).To<T>().FirstOrDefault();
+            return this.commentsRepository.AllAsNoTracking().Where(x => x.Id == comment.Id).To<PostCommentViewModel>().FirstOrDefault();
         }
 
         public async Task DeleteAllCommentsFromProfileAsync(int profileId)

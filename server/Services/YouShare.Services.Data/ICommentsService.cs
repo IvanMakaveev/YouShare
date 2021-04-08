@@ -7,7 +7,7 @@
 
     public interface ICommentsService
     {
-        Task<T> AddCommentAsync<T>(int profileId, PostCommentInputModel input);
+        Task<PostCommentViewModel> AddCommentAsync<T>(int profileId, PostCommentInputModel input);
 
         Task LikeCommentAsync(int commentId, int profileId);
 

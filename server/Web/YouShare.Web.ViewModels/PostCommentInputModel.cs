@@ -4,6 +4,7 @@ namespace YouShare.Web.ViewModels
 {
     public class PostCommentInputModel
     {
+        [Required]
         public int PostId { get; set; }
 
         [Required]

@@ -52,3 +52,24 @@ export const likePost = (postId, token) => {
         })
         .catch(res => console.log(res));
 }
+
+export const deletePost = (postId, token) => {
+    return fetch(url + postId, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        },
+    })
+        .then(res => {
+            if (res.ok == true) {
+                return "success";
+            }
+            else if (res.status == 401) {
+                return "unauthorized";
+            }
+            else {
+                return undefined;
+            }
+        })
+        .catch(res => console.log(res));
+}

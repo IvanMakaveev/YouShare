@@ -91,7 +91,7 @@ namespace YouShare.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateForProfile([FromForm]CreatePostInputModel input)
+        public async Task<IActionResult> CreateForProfile([FromForm] CreatePostInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
@@ -124,6 +124,19 @@ namespace YouShare.Web.Controllers
             var profileId = this.profilesService.GetId(userId);
 
             await this.postsService.LikePostAsync(profileId, id);
+
+            return this.Ok();
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("{id:int}")]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            var userid = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profileId = this.profilesService.GetId(userid);
+
+            await this.postsService.DeletePostFromProfileAsync(profileId, id);
 
             return this.Ok();
         }
