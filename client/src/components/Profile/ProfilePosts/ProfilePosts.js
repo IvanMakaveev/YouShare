@@ -7,7 +7,6 @@ import UserContext from '../../Contexts/UserContext';
 
 const ProfilePosts = ({
     match,
-    history
 }) => {
     const [page, setPage] = useState(1);
     const [postsData, setPosts] = useState({});
@@ -21,7 +20,7 @@ const ProfilePosts = ({
                     setPosts(res)
                 }
             })
-    }, [page])
+    }, [page, profileId])
 
     const onPostDeleteHandler = (postId) => {
         setPosts(prev => ({ ...prev, items: prev.items - 1, posts: prev.posts.filter(x => x.id != postId) }))
