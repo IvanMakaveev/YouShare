@@ -1,4 +1,6 @@
-const url = 'https://localhost:44319/profiles/';
+import * as errorService from './errorService';
+
+const url = process.env.REACT_APP_API_URL + 'profiles/';
 
 export const getCurrentProfileData = (token) => {
     return fetch(url, {
@@ -14,7 +16,9 @@ export const getCurrentProfileData = (token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const getProfileData = (id, token) => {
@@ -31,7 +35,9 @@ export const getProfileData = (id, token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const followProfile = (id, token) => {
@@ -52,7 +58,9 @@ export const followProfile = (id, token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const editProfile = (id, formData, token) => {
@@ -74,7 +82,9 @@ export const editProfile = (id, formData, token) => {
                 return res.json();
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const isOwner = (id, token) => {
@@ -84,7 +94,9 @@ export const isOwner = (id, token) => {
         }
     })
         .then(res => res.json())
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const deleteProfile = (id, token) => {
@@ -102,5 +114,7 @@ export const deleteProfile = (id, token) => {
                 return 'error';
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }

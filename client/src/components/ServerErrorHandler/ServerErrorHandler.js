@@ -1,4 +1,4 @@
-const Error = () => {
+const ServerErrorHandler = () => {
     return (
         <div className="vh-100" style={{ backgroundImage: "url(error.jpg)" }}>
             <h1>Content Not Found</h1>
@@ -7,4 +7,4 @@ const Error = () => {
     )
 };
 
-export default Error;
+export default ServerErrorHandler;

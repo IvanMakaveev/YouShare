@@ -92,6 +92,7 @@ class Register extends Component {
     render() {
         if (this.context[0]) {
             this.props.history.push("/home");
+            return null;
         }
 
         return (

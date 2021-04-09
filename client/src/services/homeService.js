@@ -1,4 +1,6 @@
-const url = 'https://localhost:44319/home/';
+import * as errorService from './errorService';
+
+const url = process.env.REACT_APP_API_URL + 'home/';
 
 export const getBrowseData = (pageNumber, token) => {
     return fetch(url + pageNumber, {
@@ -17,7 +19,9 @@ export const getBrowseData = (pageNumber, token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const searchData = (pageNumber, searchText, token) => {
@@ -37,5 +41,7 @@ export const searchData = (pageNumber, searchText, token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }

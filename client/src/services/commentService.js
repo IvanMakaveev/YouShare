@@ -1,4 +1,6 @@
-const url = 'https://localhost:44319/comments/';
+import * as errorService from './errorService';
+
+const url = process.env.REACT_APP_API_URL + 'comments/';
 
 export const likeComment = (commentId, token) => {
     return fetch(url + 'likeComment/' + commentId, {
@@ -18,7 +20,9 @@ export const likeComment = (commentId, token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const createComment = (postId, commentText, token) => {
@@ -46,5 +50,7 @@ export const createComment = (postId, commentText, token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }

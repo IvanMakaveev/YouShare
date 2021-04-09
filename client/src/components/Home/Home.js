@@ -30,7 +30,6 @@ const Home = ({
             })
     }, [page])
 
-
     if (userToken == null) {
         return (<Redirect to="/" />)
     }

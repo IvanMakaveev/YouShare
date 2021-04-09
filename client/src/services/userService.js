@@ -1,9 +1,13 @@
-const url = 'https://localhost:44319/users/';
+import * as errorService from './errorService';
+
+const url = process.env.REACT_APP_API_URL + 'users/';
 
 export const getRegisteredCountries = () => {
     return fetch(url + 'countries')
         .then(res => res.json())
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const registerUser = (newUser) => {
@@ -15,7 +19,9 @@ export const registerUser = (newUser) => {
             body: JSON.stringify(newUser)
         })
         .then(res => res.json())
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const loginUser = (userData) => {
@@ -27,5 +33,7 @@ export const loginUser = (userData) => {
             body: JSON.stringify(userData)
         })
         .then(res => res.json())
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }

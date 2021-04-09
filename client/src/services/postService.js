@@ -1,4 +1,6 @@
-const url = 'https://localhost:44319/posts/';
+import * as errorService from './errorService';
+
+const url = process.env.REACT_APP_API_URL + 'posts/';
 
 export const createPost = (formData, token) => {
     return fetch(url, {
@@ -19,7 +21,9 @@ export const createPost = (formData, token) => {
                 return res.json();
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const getPosts = (id, page, token) => {
@@ -29,7 +33,9 @@ export const getPosts = (id, page, token) => {
         },
     })
         .then(res => res.json())
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const likePost = (postId, token) => {
@@ -50,7 +56,9 @@ export const likePost = (postId, token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }
 
 export const deletePost = (postId, token) => {
@@ -71,5 +79,7 @@ export const deletePost = (postId, token) => {
                 return undefined;
             }
         })
-        .catch(res => console.log(res));
+        .catch(res => {
+            errorService.logError(res);
+        });
 }

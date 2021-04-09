@@ -8,6 +8,7 @@ import CreatePost from './CreatePost';
 import ProfilePosts from './ProfilePosts';
 import Delete from './Delete';
 import Edit from './Edit';
+import isAuthenticated from '../../hoc/isAuthenticated';
 import style from './Profile.module.css'
 
 const Profile = ({
@@ -129,9 +130,9 @@ const Profile = ({
                 <section className="col-md-8">
                     <Switch>
                         <Route exact path="/profile/:profileId" component={ProfilePosts} />
-                        <Route path="/profile/:profileId/post" component={CreatePost} />
+                        <Route path="/profile/:profileId/post" component={isAuthenticated(CreatePost)} />
                         <Route path="/profile/:profileId/edit" render={(props) => { return <Edit {...props} didUpdate={onInfoUpdateHandler} /> }} />
-                        <Route path="/profile/:profileId/delete" component={Delete} />
+                        <Route path="/profile/:profileId/delete" component={isAuthenticated(Delete)} />
                     </Switch>
                 </section>
             </div>

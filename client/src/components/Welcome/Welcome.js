@@ -1,13 +1,15 @@
+import { useContext } from 'react';
 import { Jumbotron, Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 
+import UserContext from '../Contexts/UserContext';
 import CarouselCard from './CarouselCard'
 import style from './Welcome.module.css';
 
 const Welcome = () => {
-    const isLoggedIn = localStorage.getItem('token') != null;
+    const [userToken] = useContext(UserContext);
 
-    if (isLoggedIn) {
+    if (userToken) {
         return (<Redirect to="/home"/>)
     }
 

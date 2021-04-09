@@ -11,7 +11,9 @@ import Login from './components/Login/';
 import Logout from './components/Logout';
 import Profile from './components/Profile';
 import Search from './components/Search';
-import Error from './components/Error';
+import ClientErrorBoundary from './components/ClientErrorBoundary/';
+import ServerErrorHandler from './components/ServerErrorHandler';
+import isAuthenticated from './hoc/isAuthenticated';
 import UserContext from './components/Contexts/UserContext';
 
 import './App.css';
@@ -25,25 +27,27 @@ function App() {
 
     return (
         <div className="App">
-            <UserContext.Provider value={[userToken, setUserToken]}>
-                <Header />
+            <ClientErrorBoundary>
+                <UserContext.Provider value={[userToken, setUserToken]}>
+                    <Header />
 
-                <main className="main">
-                    <Switch>
-                        <Route path="/" exact component={Welcome} />
-                        <Route path="/home" component={Home} />
-                        <Route path="/search/:searchText" component={Search}/>
-                        <Route path="/privacy" component={Privacy} />
-                        <Route path="/register" component={Register} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/logout" component={Logout} />
-                        <Route path="/profile/:profileId" component={Profile} />
-                        <Route path="/error" component={Error} />
-                    </Switch>
-                </main>
-            </UserContext.Provider>
+                    <main className="main">
+                        <Switch>
+                            <Route path="/" exact component={Welcome} />
+                            <Route path="/home" component={isAuthenticated(Home)} />
+                            <Route path="/search/:searchText" component={Search} />
+                            <Route path="/privacy" component={Privacy} />
+                            <Route path="/register" component={Register} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/logout" component={Logout} />
+                            <Route path="/profile/:profileId" component={Profile} />
+                            <Route path="/error" component={ServerErrorHandler} />
+                        </Switch>
+                    </main>
+                </UserContext.Provider>
 
-            <Footer />
+                <Footer />
+            </ClientErrorBoundary>
         </div>
     );
 }

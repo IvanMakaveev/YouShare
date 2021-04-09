@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 
 import * as profileService from '../../../services/profileService';
 import * as userService from '../../../services/userService';
+import isAuthenticated from '../../../hoc/isAuthenticated';
 import UserContext from '../../Contexts/UserContext';
 
 class Edit extends Component {
@@ -211,4 +212,4 @@ class Edit extends Component {
 
 Edit.contextType = UserContext;
 
-export default Edit;
+export default isAuthenticated(Edit);
