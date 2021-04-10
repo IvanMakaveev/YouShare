@@ -1,8 +1,8 @@
+import { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 
 import * as commentService from '../../../services/commentService';
-import { useContext, useState } from 'react';
 import UserContext from '../../Contexts/UserContext';
 
 const Comment = ({
